@@ -43,7 +43,7 @@
         }
         button:disabled { background-color: #bdc3c7; }
         button:hover:not(:disabled) { background-color: #2980b9; }
-        
+
         #results {
             margin-top: 25px;
             padding: 20px;
@@ -74,7 +74,7 @@
 
 <div class="container">
     <h1>🚀 Localhost Load Test</h1>
-    
+
     <div class="input-group">
         <label>Target URL</label>
         <input type="text" id="url" value="http://localhost:3000" placeholder="http://localhost:port/...">
@@ -175,7 +175,7 @@
         document.getElementById('status').innerText = "Đang chạy...";
         document.getElementById('ok').innerText = "0";
         document.getElementById('err').innerText = "0";
-        
+
         const startTime = performance.now();
 
         if (worker) worker.terminate();
@@ -196,14 +196,14 @@
                 document.getElementById('err').innerText = data.err;
                 document.getElementById('elapsed').innerText = elapsed.toFixed(2) + "s";
                 progressFill.style.width = '100%';
-                
+
                 // Tính Percentiles
                 const lat = data.latencies.sort((a, b) => a - b);
                 if (lat.length > 0) {
                     document.getElementById('p50').innerText = lat[Math.floor(lat.length * 0.5)].toFixed(2) + " ms";
                     document.getElementById('p95').innerText = lat[Math.floor(lat.length * 0.95)].toFixed(2) + " ms";
                 }
-                
+
                 startBtn.disabled = false;
             }
         };
