@@ -1,184 +1,259 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fsociety DDoS GUI</title>
-    <style>
-        /* CSS TỐI ƯU CHO MOBILE */
-        body {
-            background-color: #000;
-            color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENSHI | Red Team Portfolio</title>
 
-        .container { width: 100%; max-width: 500px; }
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 
-        /* Cửa sổ Terminal phía trên */
-        .terminal-window {
-            border: 1px solid #333;
-            background: #050505;
-            width: 100%;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            overflow: hidden;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-        .title-bar {
-            background: #1a1a1a;
-            padding: 5px 10px;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #333;
-        }
+body{
+  background:#020617;
+  color:#e2e8f0;
+  font-family:Consolas, monospace;
+  overflow-x:hidden;
+}
 
-        .terminal-body {
-            height: 150px;
-            padding: 10px;
-            font-size: 13px;
-            color: #00ff00;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
+/* PARTICLES */
+#bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
 
-        /* Logo & Text */
-        .logo-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+/* HEADER */
+header{
+  text-align:center;
+  padding:60px 20px;
+}
+h1{
+  color:#22c55e;
+  font-size:45px;
+  font-family:'Orbitron';
+}
 
-        .logo-img {
-            width: 120px;
-            filter: drop-shadow(0 0 5px red);
-        }
+/* TYPING */
+.typing{
+  border-right:2px solid #22c55e;
+  white-space:nowrap;
+  overflow:hidden;
+  width:0;
+  animation:typing 4s steps(40,end) forwards, blink .7s infinite;
+}
+@keyframes typing{to{width:100%}}
+@keyframes blink{50%{border-color:transparent}}
 
-        h1 { font-size: 24px; letter-spacing: 5px; margin: 10px 0 0; color: #fff; }
-        .tagline { font-size: 9px; color: #aa0000; margin-bottom: 20px; }
+/* CONTAINER */
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
 
-        /* Form nhập liệu */
-        .form-group { width: 100%; margin-bottom: 15px; }
-        label { display: block; font-size: 12px; margin-bottom: 5px; color: #888; }
-        
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            background: #000;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 10px;
-            box-sizing: border-box;
-            outline: none;
-        }
+/* CARD */
+.card{
+  background:#020617;
+  border:1px solid #22c55e33;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  transition:0.3s;
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 20px #22c55e44;
+}
 
-        .checkbox-group { font-size: 12px; margin: 15px 0; }
-        .checkbox-group input { margin-right: 10px; }
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
 
-        /* Nút bấm */
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            font-family: inherit;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+/* ITEM */
+.item{
+  border:1px solid #334155;
+  padding:15px;
+  border-radius:10px;
+}
 
-        .btn-start { background: #cc0000; color: white; }
-        .btn-stop { background: #333; color: #888; }
-        
-        .btn:active { opacity: 0.8; transform: scale(0.98); }
+/* TAG */
+.tag{
+  display:inline-block;
+  border:1px solid #38bdf8;
+  padding:5px 10px;
+  border-radius:8px;
+  margin:5px;
+}
 
-        /* Hiệu ứng nhấp nháy */
-        .blink { animation: blinker 1s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
-    </style>
+/* TERMINAL */
+.terminal{
+  background:black;
+  color:#22c55e;
+  padding:15px;
+  border-radius:10px;
+  font-size:14px;
+  height:200px;
+  overflow:auto;
+}
+
+/* LINKS */
+a{color:#38bdf8;text-decoration:none}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#64748b;
+}
+</style>
 </head>
+
 <body>
 
+<canvas id="bg"></canvas>
+
+<header>
+  <h1>GENSHI</h1>
+  <p class="typing">Future Developer | Red Team Elite | Cybersecurity</p>
+</header>
+
 <div class="container">
-    <div class="terminal-window">
-        <div class="title-bar">
-            <span>Fsociety DDoS GUI</span>
-            <span>_ □ X</span>
-        </div>
-        <div class="terminal-body" id="log">
-            √ Gambar berhasil dimuat.
-        </div>
-    </div>
 
-    <div class="logo-section">
-        <img src="https://raw.githubusercontent.com/genshi01/Hack/main/fsociety_logo.png" class="logo-img" alt="FSOCIETY" onerror="this.src='https://i.imgur.com/uX8Zf8v.png'">
-        <h1>FSOCIETY</h1>
-        <div class="tagline">WE ARE FINALLY FREE WE ARE FINALLY AWAKE<br>PYSCODES WAS HERE</div>
-    </div>
-
-    <div class="form-group">
-        <label>Target URL:</label>
-        <input type="text" id="target" placeholder="https://example.com">
-    </div>
-
-    <div class="form-group">
-        <label>Number of Requests:</label>
-        <input type="number" id="requests" placeholder="0">
-    </div>
-
-    <div class="checkbox-group">
-        <input type="checkbox" id="stealth"> <label for="stealth">Enable Stealth Mode</label><br>
-        <input type="checkbox" id="proxy"> <label for="proxy">Enable Proxy (Auto Fetch)</label>
-    </div>
-
-    <button class="btn btn-start" onclick="startAttack()" id="startBtn">Start Attack</button>
-    <button class="btn btn-stop" onclick="stopAttack()" id="stopBtn">Stop Attack</button>
+<div class="card">
+  <h2>📌 Thông tin</h2>
+  <p>Ngày sinh: 31/10/2012</p>
+  <p>Địa chỉ: New York, USA</p>
 </div>
 
+<div class="card">
+  <h2>💻 Kĩ năng</h2>
+  <span class="tag">Cybersecurity</span>
+  <span class="tag">Python</span>
+  <span class="tag">Networking</span>
+  <span class="tag">Pentest</span>
+</div>
+
+<div class="card">
+  <h2>🚀 Projects</h2>
+  <div class="grid">
+    <div class="item">
+      <b>Recon Tool</b>
+      <p>Scan subdomain + port</p>
+    </div>
+    <div class="item">
+      <b>Password Checker</b>
+      <p>Test độ mạnh mật khẩu</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🛠 Tools</h2>
+  <span class="tag">Nmap</span>
+  <span class="tag">Burp Suite</span>
+  <span class="tag">Sqlmap</span>
+  <span class="tag">Wireshark</span>
+</div>
+
+<div class="card">
+  <h2>📄 Writeups</h2>
+  <div class="grid">
+    <div class="item">
+      <b>SQL Injection</b>
+      <p>Exploit login bypass</p>
+    </div>
+    <div class="item">
+      <b>XSS</b>
+      <p>Stored & Reflected attack</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🖥 Terminal</h2>
+  <div class="terminal" id="terminal"></div>
+</div>
+
+<div class="card">
+  <h2>🌐 Liên hệ</h2>
+  <p><a href="https://www.facebook.com/share/1EEnYU7oFR/">Facebook</a></p>
+  <p><a href="https://tiktok.com/@pronator01">TikTok</a></p>
+</div>
+
+</div>
+
+<footer>
+© 2026 GENSHI | Cybersecurity
+</footer>
+
 <script>
-    const logDiv = document.getElementById('log');
-    let attackInterval;
+// TERMINAL EFFECT
+const text = [
+"Initializing...",
+"Loading modules...",
+"Bypassing firewall...",
+"Access granted.",
+"Welcome GENSHI"
+];
 
-    const fakeLogs = [
-        "> Establishing connection...",
-        "> Proxy rotating...",
-        "> Packet sent to target...",
-        "> Bypass firewall layer 7...",
-        "> Response: 200 OK (Simulated)",
-        "> Thread #482 active...",
-        "> Injecting payload...",
-        "> [SUCCESS] Packet delivered."
-    ];
+let i=0;
+let term = document.getElementById("terminal");
 
-    function startAttack() {
-        const target = document.getElementById('target').value;
-        if(!target) return alert("Nhập mục tiêu đã bạn ơi!");
+function type(){
+  if(i < text.length){
+    term.innerHTML += text[i] + "<br>";
+    i++;
+    setTimeout(type,800);
+  }
+}
+type();
 
-        document.getElementById('startBtn').innerHTML = "ATTACKING...";
-        document.getElementById('startBtn').classList.add('blink');
-        
-        logDiv.innerHTML = "> Initiating DDoS protocol on: " + target + "<br>";
+// PARTICLES
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
 
-        attackInterval = setInterval(() => {
-            const randomMsg = fakeLogs[Math.floor(Math.random() * fakeLogs.length)];
-            const time = new Date().toLocaleTimeString();
-            logDiv.innerHTML += `[${time}] ${randomMsg}<br>`;
-            logDiv.scrollTop = logDiv.scrollHeight;
-        }, 500);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    d:Math.random()*1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#22c55e";
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  update();
+}
+
+function update(){
+  particles.forEach(p=>{
+    p.y += p.d;
+    if(p.y>canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
     }
+  });
+}
 
-    function stopAttack() {
-        clearInterval(attackInterval);
-        document.getElementById('startBtn').innerHTML = "Start Attack";
-        document.getElementById('startBtn').classList.remove('blink');
-        logDiv.innerHTML += "<br>> ATTACK HALTED. ALL THREADS CLOSED.";
-        logDiv.scrollTop = logDiv.scrollHeight;
-    }
+setInterval(draw,30);
 </script>
 
 </body>
