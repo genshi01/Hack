@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fsociety DDoS GUI</title>
+    <style>
+        /* CSS TỐI ƯU CHO MOBILE */
+        body {
+            background-color: #000;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container { width: 100%; max-width: 500px; }
+
+        /* Cửa sổ Terminal phía trên */
+        .terminal-window {
+            border: 1px solid #333;
+            background: #050505;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .title-bar {
+            background: #1a1a1a;
+            padding: 5px 10px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-body {
+            height: 150px;
+            padding: 10px;
+            font-size: 13px;
+            color: #00ff00;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Logo & Text */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            width: 120px;
+            filter: drop-shadow(0 0 5px red);
+        }
+
+        h1 { font-size: 24px; letter-spacing: 5px; margin: 10px 0 0; color: #fff; }
+        .tagline { font-size: 9px; color: #aa0000; margin-bottom: 20px; }
+
+        /* Form nhập liệu */
+        .form-group { width: 100%; margin-bottom: 15px; }
+        label { display: block; font-size: 12px; margin-bottom: 5px; color: #888; }
+        
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            background: #000;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .checkbox-group { font-size: 12px; margin: 15px 0; }
+        .checkbox-group input { margin-right: 10px; }
+
+        /* Nút bấm */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .btn-start { background: #cc0000; color: white; }
+        .btn-stop { background: #333; color: #888; }
+        
+        .btn:active { opacity: 0.8; transform: scale(0.98); }
+
+        /* Hiệu ứng nhấp nháy */
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="terminal-window">
+        <div class="title-bar">
+            <span>Fsociety DDoS GUI</span>
+            <span>_ □ X</span>
+        </div>
+        <div class="terminal-body" id="log">
+            √ Gambar berhasil dimuat.
+        </div>
+    </div>
+
+    <div class="logo-section">
+        <img src="https://raw.githubusercontent.com/genshi01/Hack/main/fsociety_logo.png" class="logo-img" alt="FSOCIETY" onerror="this.src='https://i.imgur.com/uX8Zf8v.png'">
+        <h1>FSOCIETY</h1>
+        <div class="tagline">WE ARE FINALLY FREE WE ARE FINALLY AWAKE<br>PYSCODES WAS HERE</div>
+    </div>
+
+    <div class="form-group">
+        <label>Target URL:</label>
+        <input type="text" id="target" placeholder="https://example.com">
+    </div>
+
+    <div class="form-group">
+        <label>Number of Requests:</label>
+        <input type="number" id="requests" placeholder="0">
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="stealth"> <label for="stealth">Enable Stealth Mode</label><br>
+        <input type="checkbox" id="proxy"> <label for="proxy">Enable Proxy (Auto Fetch)</label>
+    </div>
+
+    <button class="btn btn-start" onclick="startAttack()" id="startBtn">Start Attack</button>
+    <button class="btn btn-stop" onclick="stopAttack()" id="stopBtn">Stop Attack</button>
+</div>
+
+<script>
+    const logDiv = document.getElementById('log');
+    let attackInterval;
+
+    const fakeLogs = [
+        "> Establishing connection...",
+        "> Proxy rotating...",
+        "> Packet sent to target...",
+        "> Bypass firewall layer 7...",
+        "> Response: 200 OK (Simulated)",
+        "> Thread #482 active...",
+        "> Injecting payload...",
+        "> [SUCCESS] Packet delivered."
+    ];
+
+    function startAttack() {
+        const target = document.getElementById('target').value;
+        if(!target) return alert("Nhập mục tiêu đã bạn ơi!");
+
+        document.getElementById('startBtn').innerHTML = "ATTACKING...";
+        document.getElementById('startBtn').classList.add('blink');
+        
+        logDiv.innerHTML = "> Initiating DDoS protocol on: " + target + "<br>";
+
+        attackInterval = setInterval(() => {
+            const randomMsg = fakeLogs[Math.floor(Math.random() * fakeLogs.length)];
+            const time = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${time}] ${randomMsg}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }, 500);
+    }
+
+    function stopAttack() {
+        clearInterval(attackInterval);
+        document.getElementById('startBtn').innerHTML = "Start Attack";
+        document.getElementById('startBtn').classList.remove('blink');
+        logDiv.innerHTML += "<br>> ATTACK HALTED. ALL THREADS CLOSED.";
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
